@@ -8,6 +8,7 @@ Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = ne
 bool exibirMenu = true;
 List<Pessoa> hospedes = new();
 Suite? suite = null;
+Reserva? reserva = null;
 
 while (exibirMenu)
 {
@@ -15,6 +16,7 @@ while (exibirMenu)
     Console.WriteLine("Seja bem-vindo ao sistema de hospedagem do hotel.\nDigite uma opção:");
     Console.WriteLine("1 - Cadastrar hóspedes");
     Console.WriteLine("2 - Cadastrar suíte");
+    Console.WriteLine("3 - Criar reserva");
     Console.WriteLine("4 - Encerrar");
 
     string? opcao = Console.ReadLine();
@@ -83,6 +85,41 @@ while (exibirMenu)
 
             suite = new Suite(tipo ?? "Padrão", capacidade, valorDiaria);
             Console.WriteLine("Suíte cadastrada com sucesso!");
+            break;
+        case "3":
+            Console.Clear();
+            if (suite == null)
+            {
+                Console.WriteLine("Suíte não cadastrada. Cadastre a suíte primeiro.");
+            }
+            else if (hospedes.Count == 0)
+            {
+                Console.WriteLine("Nenhum hóspede cadastrado. Cadastre hóspedes primeiro.");
+            }
+            else
+            {
+                Console.Write("Quantos dias de reserva? ");
+                if (!int.TryParse(Console.ReadLine(), out int dias))
+                {
+                    Console.WriteLine("Número inválido de dias.");
+                    break;
+                }
+
+                try
+                {
+                    reserva = new Reserva(dias);
+                    reserva.CadastrarSuite(suite);
+                    reserva.CadastrarHospedes(hospedes);
+
+                    Console.WriteLine("Reserva criada com sucesso!");
+                    Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
+                    Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria():C}");
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine($"Erro ao cadastrar hóspedes: {ex.Message}");
+                }
+            }
             break;
         case "4":
             exibirMenu = false;
