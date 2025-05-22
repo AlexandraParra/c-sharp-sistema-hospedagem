@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using DesafioProjetoHospedagem.Models;
 
 Console.OutputEncoding = Encoding.UTF8;
+Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
 
 // Cria os modelos de hóspedes e cadastra na lista de hóspedes
 List<Pessoa> hospedes = new List<Pessoa>();
@@ -29,4 +31,4 @@ catch (InvalidOperationException ex)
 
 // Exibe a quantidade de hóspedes e o valor da diária
 Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
-Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria()}");
+Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria():C}");
