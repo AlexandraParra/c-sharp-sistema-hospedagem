@@ -23,6 +23,7 @@ while (exibirMenu)
 
     switch (opcao)
     {
+        // Cria os modelos de hóspedes e cadastra na lista de hóspedes
         case "1":
             Console.Clear();
             Console.Write("Quantos hóspedes deseja cadastrar? ");
@@ -60,6 +61,7 @@ while (exibirMenu)
             }
             Console.WriteLine("Hóspedes cadastrados com sucesso!");
             break;
+        // Cria a suíte
         case "2":
             Console.Clear();
             Console.Write("Insira o tipo da suíte: ");
@@ -86,6 +88,7 @@ while (exibirMenu)
             suite = new Suite(tipo ?? "Padrão", capacidade, valorDiaria);
             Console.WriteLine("Suíte cadastrada com sucesso!");
             break;
+        // Cria uma nova reserva, passando a suíte e os hóspedes
         case "3":
             Console.Clear();
             if (suite == null)
@@ -111,6 +114,7 @@ while (exibirMenu)
                     reserva.CadastrarSuite(suite);
                     reserva.CadastrarHospedes(hospedes);
 
+                    // Exibe a quantidade de hóspedes e o valor da diária
                     Console.WriteLine("Reserva criada com sucesso!");
                     Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
                     Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria():C}");
