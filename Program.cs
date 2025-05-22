@@ -5,30 +5,58 @@ using DesafioProjetoHospedagem.Models;
 Console.OutputEncoding = Encoding.UTF8;
 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
 
-// Cria os modelos de hóspedes e cadastra na lista de hóspedes
-List<Pessoa> hospedes = new List<Pessoa>();
+bool exibirMenu = true;
+List<Pessoa> hospedes = new();
 
-Pessoa p1 = new Pessoa(nome: "Hóspede 1");
-Pessoa p2 = new Pessoa(nome: "Hóspede 2");
-
-hospedes.Add(p1);
-hospedes.Add(p2);
-
-// Cria a suíte
-Suite suite = new Suite(tipoSuite: "Premium", capacidade: 2, valorDiaria: 30);
-
-// Cria uma nova reserva, passando a suíte e os hóspedes
-Reserva reserva = new Reserva(diasReservados: 5);
-try
+while (exibirMenu)
 {
-    reserva.CadastrarSuite(suite);
-    reserva.CadastrarHospedes(hospedes);
-}
-catch (InvalidOperationException ex)
-{
-    Console.WriteLine($"Erro ao cadastrar hóspedes: {ex.Message}");
-}
+    Console.Clear();
+    Console.WriteLine("Seja bem-vindo ao sistema de hospedagem do hotel.\nDigite uma opção:");
+    Console.WriteLine("1 - Cadastrar hóspedes");
 
-// Exibe a quantidade de hóspedes e o valor da diária
-Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
-Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria():C}");
+    string? opcao = Console.ReadLine();
+
+    switch (opcao)
+    {
+        case "1":
+            Console.Clear();
+            Console.Write("Quantos hóspedes deseja cadastrar? ");
+            if (!int.TryParse(Console.ReadLine(), out int numeroHospedes))
+            {
+                Console.WriteLine("Número inválido.");
+                break;
+            }
+
+            for (int i = 1; i <= numeroHospedes; i++)
+            {
+                Console.WriteLine($"Hóspede {i}:");
+                string? nome;
+                while (true)
+                {
+                    Console.Write("  Nome: ");
+                    nome = Console.ReadLine();
+
+                    if (!string.IsNullOrWhiteSpace(nome) && nome.All(char.IsLetter))
+                        break;
+                    Console.WriteLine("  Nome inválido. Digite apenas letras.");
+                }
+
+                string? sobrenome;
+                while (true)
+                {
+                    Console.Write("  Sobrenome: ");
+                    sobrenome = Console.ReadLine();
+
+                    if (!string.IsNullOrWhiteSpace(sobrenome) && sobrenome.All(char.IsLetter))
+                        break;
+                    Console.WriteLine("  Sobrenome inválido. Digite apenas letras.");
+                }
+
+                hospedes.Add(new Pessoa(nome, sobrenome));
+            }
+            break;
+        default:
+            Console.WriteLine("Opção inválida");
+            break;
+    }
+}
