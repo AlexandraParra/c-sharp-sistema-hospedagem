@@ -7,12 +7,15 @@ Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = ne
 
 bool exibirMenu = true;
 List<Pessoa> hospedes = new();
+Suite? suite = null;
 
 while (exibirMenu)
 {
     Console.Clear();
     Console.WriteLine("Seja bem-vindo ao sistema de hospedagem do hotel.\nDigite uma opção:");
     Console.WriteLine("1 - Cadastrar hóspedes");
+    Console.WriteLine("2 - Cadastrar suíte");
+    Console.WriteLine("4 - Encerrar");
 
     string? opcao = Console.ReadLine();
 
@@ -51,12 +54,45 @@ while (exibirMenu)
                         break;
                     Console.WriteLine("  Sobrenome inválido. Digite apenas letras.");
                 }
-
                 hospedes.Add(new Pessoa(nome, sobrenome));
             }
+            Console.WriteLine("Hóspedes cadastrados com sucesso!");
+            break;
+        case "2":
+            Console.Clear();
+            Console.Write("Insira o tipo da suíte: ");
+            string? tipo = Console.ReadLine();
+
+            int capacidade;
+            while (true)
+            {
+                Console.Write("Qual é a capacidade da suíte? ");
+                if (int.TryParse(Console.ReadLine(), out capacidade) && capacidade > 0)
+                    break;
+                Console.WriteLine("Capacidade inválida. Digite um número inteiro positivo.");
+            }
+
+            decimal valorDiaria;
+            while (true)
+            {
+                Console.Write("Qual é o valor da diária: ");
+                if (decimal.TryParse(Console.ReadLine(), out valorDiaria) && valorDiaria > 0)
+                    break;
+                Console.WriteLine("Valor inválido. Digite um valor decimal positivo.");
+            }
+
+            suite = new Suite(tipo ?? "Padrão", capacidade, valorDiaria);
+            Console.WriteLine("Suíte cadastrada com sucesso!");
+            break;
+        case "4":
+            exibirMenu = false;
             break;
         default:
             Console.WriteLine("Opção inválida");
             break;
     }
+
+    Console.WriteLine("Pressione uma tecla para continuar...");
+    Console.ReadLine();
 }
+Console.WriteLine("O programa se encerrou.");
